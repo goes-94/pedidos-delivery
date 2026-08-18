@@ -1,0 +1,1050 @@
+
+
+@media (max-width: 600px) {
+        .card-produto {
+        width: 100%; /* No celular, ele ocupa a tela toda */
+            }
+}
+
+@media (max-width: 600px) {
+    .container {
+        display: flex;
+        flex-direction: column; /* Faz um ficar embaixo do outro */
+        align-items: center;
+    }
+
+    .testimonials-section {
+        height: auto; /* Garante que a seção estique */
+        padding: 40px 20px; /* Dá um respiro para o texto não colar nas bordas */
+    }
+}
+
+/* --- RESET E BASE --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+.body {
+    background-color: #ffffff;
+    color: #1a7ef1;
+    width: 100%; /* Corrigido de 50% para 100% */
+    overflow-x: hidden; /* Impede a rolagem lateral chata */
+}
+
+/* --- CABEÇALHO (ESTILO MOBILE POR PADRÃO) --- */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;background-color: #650a0a;
+
+    /* background-color: rgba(232, 6, 6, 0.605); Fundo semi-transparente para leitura */
+    /*padding: 15px;*/
+    z-index: 1000;
+    display: flex;
+    flex-direction: column; /* No celular, logo em cima, menu embaixo */
+    align-items: center;
+    /*gap: 10px;*/
+
+    padding: 10px;
+    gap: 5px;
+}
+
+header h2 {
+    color: #D4AF37;
+    font-family: Georgia, serif;
+    /*font-size: 1.5rem;*/
+    text-align: center;
+
+    font-size: 1.2rem;
+}
+
+header nav ul {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+}
+
+header nav li a {
+    text-decoration: none;
+    color: #D4AF37; /* Forçando a cor verde limão */
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+header nav li a:visited {
+    color: #D4AF37;
+}
+
+header nav li a:hover {
+    color: #f17e1a;
+}
+
+/* --- AJUSTES PARA PC (TELAS MAIORES QUE 768px) --- */
+@media (min-width: 768px) {
+    header {
+        flex-direction: row; /* No PC, fica lado a lado */
+        justify-content: space-around;
+        padding: 20px 50px;
+    }
+
+    header h2 {
+        font-size: 2rem;
+    }
+
+    header nav ul {
+        gap: 30px;
+    }
+
+    header nav li a {
+        font-size: 1.1rem;
+    }
+}
+
+/* --- CORREÇÃO DE CONTAINERS (PARA NÃO ATROPELAR) --- */
+.container {
+    /*padding-top: 120px;*/ /* Dá espaço para o header fixo não cobrir o conteúdo */
+    min-height: 100vh;
+    /*display: flex;*/
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #F2F2F2;
+
+    padding-top: 140px;
+    display: block;
+}
+
+/*Lista de Slides */
+
+.list {
+    position: relative;
+    width: 90vw;
+    height: 80vh;
+    
+}
+
+.item {
+    position: absolute;
+    flex-direction: column;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transform: translateX(1%);
+    opacity: 0;
+    transition: all 0.7s ease-in-out;
+}
+
+.item.active {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 5;
+}
+
+/* Imagem do Canil */
+.car-img {
+    flex: 1;
+    text-align: center;
+
+}
+
+.car-img {
+    width: 100%;
+    max-width: 400px;
+    transform: rotate(-20deg);
+    transition: transform 0.5s ease-in-out;
+    margin-bottom:0%;
+}
+
+/* Carrinho de Compras */
+.btn-carrinho {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    background-color: tomato; /* Cor do WhatsApp */
+    color: #ffffff;
+    text-decoration: none;
+    transition: 0.7;
+    font-weight: bold;
+    font-size: 1.1em;
+    border-radius: 50px;
+    transition: 0.3s ease;
+    text-transform: uppercase;
+    border-color: rgb(255, 58, 4);
+
+
+}
+
+.btn-carrinho:hover {
+    background-color: #ff2701;
+    color: white;
+    /* transform: scale(3.90ms); */
+    /* transition-delay: 0.3ms; */
+}
+
+/* Conteudo textual */
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 15px;
+    padding-right: 40px;
+    text-align: right;
+    padding: 0;
+}
+
+.car-information {
+    font-weight: bold;
+    width: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    
+}
+
+.content h2 {
+    font-size: 6vw;
+    line-height: 1;
+    color: #beff1b;
+}
+
+.description {
+    color: #d9d9d9;
+    font-size: 14px;
+    max-width: 400px;
+}
+
+.information {
+    text-decoration: none;
+    border-radius: 40px;
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    box-sizing: content-box;
+    text-transform: uppercase;
+    border: 3px solid #791fd3;
+    background-color: #beff1b;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    overflow: hidden;
+    text-decoration: none;
+    
+}
+
+.information:hover {
+    background-color: #fff200;
+    transform: scale(1.05);
+}
+
+/* Setas de navegação */
+.arrows {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70vw;
+    display: flex;
+    justify-content: space-between;
+    z-index: 5;
+}
+
+.arrows button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.arrows button:hover {
+    background-color: #beff1b;
+    transform: scale(1.1);
+}
+
+.arrows img {
+    width: 30px;
+}
+
+.arrows button#prev img {
+    transform: scaleX(-1);
+}
+
+/* indicadores */
+.indicators {
+    
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.indicators .number {
+    width: 30%;
+    font-size: 3em;
+    font-weight: bold;
+    color: #beff1b;
+}
+
+.indicators ul {
+    display: flex;
+    gap: 6px;
+    list-style: none;
+}
+
+.indicators li {
+    width: 40px;
+    height: 5px;
+    background-color:#beff1b ;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.indicators li .active {
+    background-color: #fff;
+}
+
+/*faixa decorativa */
+/* .container::before {
+    content: '';
+    position: absolute;
+    top: 90%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #010000;
+    z-index: 1;
+} */
+
+/* Seção de Depoimentos */
+.testimonials-section {
+    padding: 60px 0; /* Espaçamento interno superior e inferior */
+    background-color: #000; /* Fundo preto, como no seu site */
+    color: #fff; /* Texto branco */
+    text-align: center; /* Centraliza o texto */
+}
+
+.testimonials-section .container {
+    max-width: 1200px; /* Largura máxima do conteúdo */
+    margin: 0 auto; /* Centraliza o container */
+    padding: 0 20px; /* Espaçamento lateral */
+}
+
+.testimonials-section .section-title {
+    padding-top: 3.5cm;
+    display: flex;
+    flex-direction: column;
+    color: #7FFF00; /* Verde limão para o título */
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.testimonials-grid {
+    padding-top: 1.3cm;
+    display: inline-flex; /* Para colocar os cards lado a lado */
+    flex-wrap: wrap; /* Permite que os cards quebrem para a próxima linha em telas menores */
+    justify-content: space-around; /* Centraliza os cards */
+    gap: 20px; /* Espaçamento entre os cards */
+    margin-bottom: 30px;
+}
+
+.testimonial-card {
+    background-color: #1a1a1a; /* Fundo cinza escuro para os cards */
+    border-radius: 25px;
+    padding: 10px;
+    width: calc(25% - 20px); /* Para 4 cards por linha em telas grandes */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra sutil */
+    text-align: center;
+    border: 1px solid #7FFF00; /* Borda verde limão */
+    transition: transform 0.3s ease; /* Efeito hover */
+}
+
+.testimonial-card:hover {
+    transform: translateY(-10px); /* Leve levantamento no hover */
+}
+
+.testimonial-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%; /* Imagem redonda */
+    object-fit: cover; /* Garante que a imagem preencha o círculo */
+    margin-bottom: 15px;
+    border: 3px solid #7FFF00; /* Borda verde limão na imagem */
+}
+
+.testimonial-stars {
+    color: #FFD700; /* Cor das estrelas (amarelo dourado) */
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+.testimonial-text {
+    font-size: 1em;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    font-style: italic;
+    color: #e0e0e0; /* Cor do texto do depoimento */
+}
+
+.testimonial-author {
+    font-size: 0.9em;
+    color: #7FFF00; /* Verde limão para o autor */
+    font-weight: bold;
+}
+
+/* Barra de Satisfação */
+.satisfaction-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1a1a1a;
+    border: 1px solid #7FFF00;
+    border-radius: 50px; /* Bordas arredondadas */
+    padding: 15px 60px;
+    max-width: 270px;
+    margin: 0 auto; /* Centraliza */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.satisfaction-icon {
+    width: 90px;
+    height: 100px;
+    margin-right: 15px;
+    border-radius: 100px;
+}
+
+.satisfaction-text {
+    font-size: 1.2em;
+    color: #fff;
+    font-weight: bold;
+}
+
+.satisfaction-text span {
+    color: #7FFF00; /* Verde limão para o número */
+}
+
+
+/* Responsividade para telas menores */
+@media (max-width: 992px) {
+    .testimonial-card {
+        width: calc(50% - 30px); /* 2 cards por linha */
+    }
+}
+
+@media (max-width: 768px) {
+    .testimonial-card {
+        width: 100%; /* 1 card por linha */
+    }
+    .testimonials-section .section-title {
+        font-size: 2em;
+    }
+    .satisfaction-bar {
+        flex-direction: column; /* Ícone e texto em colunas */
+        padding: 20px;
+    }
+    .satisfaction-icon {
+        margin-right: 0;
+        margin-bottom: 100px;
+    }
+}
+/* Seção de Diferenciais (Mantenha o Fundo Preto) */
+.diferenciais-section {
+    padding: 80px 0;
+    background-color: #000; /* Fundo preto */
+    color: #fff;
+    text-align: center;
+    border: 50%;
+}
+
+.diferenciais-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section-title-diff {
+    color: #7FFF00; /*Verde limão*/
+    font-size: 2.5em;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.diferenciais-cards-grid {
+    display: flex;
+    justify-content: space-between; /* Distribui os cards igualmente */
+    gap: 30px; /* Espaço entre os cards */
+}
+
+.diferencial-card {
+    flex: 1; /* Faz os cards ocuparem o mesmo espaço */
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border-bottom: 5px solid #7FFF00; /* Destaque inferior verde limão */
+}
+
+.diferencial-card:hover {
+    background-color: #242424; /* Leve escurecimento no hover */
+    transform: translateY(-5px); /* Efeito sutil de levantamento */
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+    /* Para dar um pequeno brilho verde limão no ícone (opcional) */
+    filter: drop-shadow(0 0 5px #7FFF00); 
+}
+
+.card-title {
+    color: #fff;
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.card-description {
+    color: #ccc;
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+/* Responsividade para Diferenciais */
+@media (max-width: 992px) {
+    .diferenciais-cards-grid {
+        flex-wrap: wrap; /* Cards quebram para a próxima linha */
+        justify-content: center;
+    }
+    .diferencial-card {
+        width: 45%; /* 2 cards por linha */
+        flex: unset;
+    }
+}
+
+@media (max-width: 600px) {
+    .diferenciais-cards-grid {
+        flex-direction: column; /* 1 card por linha */
+    }
+    .diferencial-card {
+        width: 100%;
+    }
+    .section-title-diff {
+        font-size: 2em;
+    }
+}
+
+/* Estilização do Rodapé Principal */
+.main-footer {
+    background-color: #800020; /* Preto ligeiramente mais claro que o fundo principal */
+    color: #ffffff;
+    padding: 1px 0;
+    border-top: 3px solid #ff8800; /* Linha de destaque verde limão no topo */
+}
+
+.main-footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 0px;
+}
+
+.footer-grid {
+    display: flex;
+    justify-content: space-between; /* Distribui as colunas */
+    gap: 40px;
+}
+
+.footer-column {
+    flex: 1; /* Distribui o espaço igualmente */
+    min-width: 20px; /* Garante que não fiquem muito estreitos */
+}
+
+/* Título e Logo da Empresa */
+.footer-logo {
+    margin-top: 0%;
+    font-size: 2em;
+    font-weight: bold;
+    color: #ff8000; /* Verde Limão */
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.company-slogan {
+    color: #aeabab;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.copyright-info {
+    font-size: 0.85em;
+    color: #282626; /* Cinza escuro para a informação de direitos autorais */
+    margin-top: 30px;
+}
+
+/* Títulos das Colunas */
+.column-title {
+    font-size: 1.1em;
+    color: #D4AF37;
+    font-weight: bold;
+    border-bottom: 2px solid #7FFF00; /* Linha sublinhada verde limão */
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    display: inline-block; /* Ajusta a largura da linha */
+}
+
+/* Lista de Contato */
+.contact-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-info li {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    color: #4c4949;
+}
+
+.contact-info li a {
+    color: #4c4949;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.contact-info li a:hover {
+    color: #7FFF00; /* Efeito hover verde limão */
+}
+
+.contact-info li i {
+    margin-right: 10px;
+    color: #7FFF00; /* Verde limão para os ícones */
+    font-size: 1.2em;
+}
+
+/* Redes Sociais */
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #f59607;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 1.2em;
+    text-decoration: none;
+    transition: background-color 0.3s;
+
+}
+
+.social-icon:hover {
+    background-color: #f80404; /* Efeito hover verde limão */
+    color: #ffffff; /* Texto/Ícone preto no hover */
+}
+
+
+/* Responsividade */
+@media (max-width: 850px) {
+    .footer-grid {
+        flex-direction: column; /* Colunas empilhadas */
+        justify-content: flex-start;
+        text-align: center;
+        align-items: center;
+    }
+    .footer-column {
+        min-width: 100%;
+        margin-bottom: 30px;
+    }
+    .footer-column:last-child {
+        margin-bottom: 0;
+    }
+    .column-title {
+        margin: 0 auto 20px auto; /* Centraliza o título */
+    }
+    .social-icons {
+        justify-content: center; /* Centraliza os ícones sociais */
+    }
+}
+
+/* --- Estilização da Página CANIS (Grid de Produtos) --- */
+
+.products-list-section {
+    padding: 70px 0;
+    background-color: #800020; /* Fundo preto */
+    color: #fff;
+    text-align: center;
+}
+
+.products-list-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.page-title {
+    color: #800020; /* Verde Limão */
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.page-title2 {
+    flex-direction: row;
+    justify-content: flex-end;
+    color: #e00b40; /* Verde Limão */
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    color: #ec791a;
+    margin-bottom: 50px;
+}
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* 3 colunas em telas grandes */
+    /*grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));*/ 
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.product-card {
+    width: calc(33.333% - 20px); 
+    min-width: 360px; /* Garante que os cards não fiquem muito estreitos */
+    
+    background-color: #F2F2F2;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+    border: 1px solid #333;
+    /* background-color: #1a1a1a; */
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+    border: 1px solid #333; /* Borda sutil */
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    border-color: #fc0000; /* Borda verde limão no hover */
+}
+
+.product-image {
+    width: 100%; /* Imagem ocupando a largura do card */
+    max-height: 350px; /* Limita a altura */
+    object-fit: contain; /* Garante que a imagem inteira seja visível */
+    background-color: #000; /* Fundo preto na área da imagem */
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.product-name {
+    color: #800020;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.product-description {
+    color: #800020;
+    font-size: 1em;
+    height: 60px; /* Altura fixa para alinhar cards */
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.product-features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.product-features li {
+    color: #800020;
+    font-size: 0.9em;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.feature-icon {
+    color: #fff200; /* Verde limão para o check */
+    margin-right: 10px;
+    font-size: 1.1em;
+}
+
+.btn-details {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #800020; /* Botão Verde Limão */
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    overflow: hidden;
+}
+
+.btn-details:hover {
+    background-color: #f47404; /* Levemente mais claro no hover */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 2.5em;
+    }
+    .product-grid {
+        grid-template-columns: 1fr; /* Apenas 1 coluna em telas pequenas */
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+/**Aqui começa a página de teste de detalhes do produto**/
+
+/* ======================================================= */
+/* --- ESTILIZAÇÃO DA PÁGINA DE DETALHES DO PRODUTO --- */
+/* ======================================================= */
+
+.product-details-section {
+    /* Padding-top para evitar que o conteúdo fique atrás do Header Fixo */
+    padding: 0px 0px 0; 
+    background-color: #800020;
+    color: #ffffff;
+}
+
+.product-details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.breadcrumb {
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 0px;
+}
+
+.breadcrumb a {
+    color: #ff1b1b; /* Cor Verde Limão do seu tema */
+    text-decoration: none;
+}
+
+.product-content-wrapper {
+    display: flex;
+    gap: 50px;
+    align-items: flex-start; 
+}
+
+/* Bloco de Imagem */
+.image-gallery {
+    flex: 1;
+    min-width: 300px; 
+}
+
+.main-product-image {
+    display: flex;
+    justify-content: end;
+    margin-top: 40px;
+    width: 80%;
+    max-width: 330px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
+    border: 1px solid #333;
+}
+
+/* Bloco de Detalhes */
+.details-block {
+    flex: 1;
+}
+
+.product-title {
+    font-size: 2.5em;
+    color: #ff261b;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.product-short-description {
+    font-size: 1.1em;
+    color: #4f0808;
+    margin-bottom: 30px;
+}
+
+.price-and-action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #333;
+}
+
+.price {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #3d1212;
+}
+
+/* Botão do WhatsApp (CTA Principal) */
+.btn-whatsapp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    background-color: #25D366; /* Cor do WhatsApp */
+    color: #ffffff;
+    text-decoration: none;
+    transition: 0.7;
+    font-weight: bold;
+    font-size: 1.1em;
+    border-radius: 50px;
+    transition: 0.3s ease;
+    text-transform: uppercase;
+    border: inset;
+    border-color: #25D366;
+}
+
+.btn-whatsapp:hover {
+    background-color: #128C7E;
+    color: #fff;
+}
+
+.btn-whatsapp i {
+    font-style: normal; 
+    margin-right: 10px;
+    font-size: 1.4em;
+}
+
+/* Botão whatsapp flutuante */
+#whatsapp-button {
+  position: fixed;
+  bottom: 20px;   /* distância da parte inferior */
+  right: 20px;    /* distância da lateral direita */
+  z-index: 1000;  /* garante que fique acima dos outros elementos */
+}
+
+
+#whatsapp-button img {
+  width: 60px;    /* tamanho do ícone */
+  height: 60px;
+}
+
+.specs-title, .description-title {
+    font-size: 1.5em;
+    color: #ff761b;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ffffff;
+    padding-bottom: 5px;
+}
+
+
+
+.specs-list {
+    background-color: #ffffff;
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+    color: #570707;
+}
+
+.specs-list li {
+    background-color: #e0dddd;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.specs-list strong {
+    color: rgba(255, 46, 46, 0.852);
+    margin-right: 5px;
+}
+
+.full-description {
+    line-height: 1.6;
+    color: #3c0909;
+}
+
+/* Responsividade: Empilha a imagem e os detalhes em telas menores */
+@media (max-width: 900px) {
+    .product-content-wrapper {
+        flex-direction: column; 
+    }
+    .image-gallery {
+        min-width: 100%;
+    }
+    .details-block {
+        padding-top: 200px;
+    }
+}
+
+.mapa-info img{
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #ec9f25;
+    color: #050a10;
+    padding-top: 3%;
+    padding-left: 20%;
+    padding-right: 20%;
+    padding: auto;
+
+}
+
+.mapa-info ul li a {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    opacity: 1;
+}
+

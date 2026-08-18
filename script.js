@@ -1,0 +1,202 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("formpedido");
+
+  // Se estamos na página de cadastro
+  if (form) {
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const nome = document.getElementById("nome").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const numero = document.getElementById("numero").value.trim();
+      const endereco = document.getElementById("endereco").value.trim();
+      const pedido = document.getElementById("pedido").value.trim();
+
+      // Cria objeto do pedido
+      const novoPedido = { nome, email, numero, endereco, pedido, status: "Pendente" };
+
+      // Recupera lista existente ou cria nova
+      let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+      // Evita duplicação
+      const existe = pedidos.some(p =>
+        p.nome === novoPedido.nome &&
+        p.email === novoPedido.email &&
+        p.numero === novoPedido.numero &&
+        p.endereco === novoPedido.endereco &&
+        p.pedido === novoPedido.pedido
+      );
+
+      if (!existe) {
+        pedidos.push(novoPedido);
+        localStorage.setItem("pedidos", JSON.stringify(pedidos));
+      }
+
+      // Redireciona para painel
+      window.location.href = "painelpedidos.html";
+    });
+  }
+
+  // Se estamos no painelpedidos.html
+  const tabela = document.getElementById("lista-pedidos");
+  if (tabela) {
+    let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+    pedidos.forEach((p, index) => {
+      const linha = tabela.insertRow();
+      linha.insertCell().textContent = p.nome;
+      linha.insertCell().textContent = p.email;
+      linha.insertCell().textContent = p.numero;
+      linha.insertCell().textContent = p.pedido;
+      linha.insertCell().textContent = p.endereco;
+
+      // Coluna de status com select
+      const statusCell = linha.insertCell();
+      const select = document.createElement("select");
+      ["Pendente", "Entregue", "Cancelado"].forEach(opt => {
+        const option = document.createElement("option");
+        option.value = opt;
+        option.textContent = opt;
+        if (p.status === opt) option.selected = true;
+        select.appendChild(option);
+      });
+
+      // Aplica cor inicial
+      aplicarCor(select, p.status);
+
+      // Atualiza status e cor no localStorage quando mudar
+      select.addEventListener("change", () => {
+        pedidos[index].status = select.value;
+        localStorage.setItem("pedidos", JSON.stringify(pedidos));
+        aplicarCor(select, select.value);
+      });
+
+      statusCell.appendChild(select);
+    });
+  }
+
+  // Função para aplicar cores conforme status
+  function aplicarCor(elemento, status) {
+    elemento.style.color = "#000"; // texto padrão
+    if (status === "Pendente") {
+      elemento.style.backgroundColor = "#ffea04";
+    } else if (status === "Entregue") {
+      elemento.style.backgroundColor = "#00ff73";
+    } else if (status === "Cancelado") {
+      elemento.style.backgroundColor = "#f10707";
+      elemento.style.color = "#fff"; // texto branco para contraste
+    }
+  }
+});
+
+// Carrinho de Compras
+
+document.addEventListener("DOMContentLoaded", () => {
+  let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+  // Captura todos os botões de adicionar ao carrinho
+  const botoesCarrinho = document.querySelectorAll(".btn-carrinho");
+  botoesCarrinho.forEach(botao => {
+    botao.addEventListener("click", () => {
+      const nome = botao.getAttribute("data-nome");
+      const preco = parseFloat(botao.getAttribute("data-preco"));
+
+      // Verifica se já existe o item
+      const existente = carrinho.find(item => item.nome === nome);
+
+      if (existente) {
+        existente.quantidade++;
+      } else {
+        carrinho.push({ nome: nome, preco: preco, quantidade: 1 });
+      }
+
+      localStorage.setItem("carrinho", JSON.stringify(carrinho));
+      alert(`${nome} foi adicionado ao carrinho!`);
+    });
+  });
+
+  // Renderiza carrinho se existir seção no HTML
+  function renderCarrinho() {
+    const lista = document.getElementById("lista-carrinho");
+    const totalElement = document.getElementById("total");
+    if (!lista) return;
+
+    lista.innerHTML = "";
+    let total = 0;
+
+    carrinho.forEach((item, i) => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <span>${item.nome} - R$${item.preco.toFixed(2)}</span>
+        <div>
+          <button class="menos">➖</button>
+          <span>${item.quantidade}</span>
+          <button class="mais">➕</button>
+          <button class="remover">❌</button>
+        </div>
+      `;
+
+      // Botão menos
+      li.querySelector(".menos").addEventListener("click", () => {
+        if (item.quantidade > 1) {
+          item.quantidade--;
+        } else {
+          carrinho.splice(i, 1);
+        }
+        salvarCarrinho();
+      });
+
+      // Botão mais
+      li.querySelector(".mais").addEventListener("click", () => {
+        item.quantidade++;
+        salvarCarrinho();
+      });
+
+      // Botão remover
+      li.querySelector(".remover").addEventListener("click", () => {
+        carrinho.splice(i, 1);
+        salvarCarrinho();
+      });
+
+      lista.appendChild(li);
+      total += item.preco * item.quantidade;
+    });
+
+    if (totalElement) {
+      totalElement.textContent = `Total: R$${total.toFixed(2)}`;
+    }
+  }
+
+  function salvarCarrinho() {
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+    renderCarrinho();
+  }
+
+  const finalizarBtn = document.getElementById("finalizar");
+  if (finalizarBtn) {
+    finalizarBtn.addEventListener("click", () => {
+      if (carrinho.length === 0) {
+        alert("Seu carrinho está vazio.");
+        return;
+      }
+
+      let mensagem = "Olá! Gostaria de finalizar meu pedido:\n\n";
+      carrinho.forEach((item, i) => {
+        mensagem += `${i + 1}. ${item.nome} (x${item.quantidade}) - R$${(item.preco * item.quantidade).toFixed(2)}\n`;
+      });
+
+      const total = carrinho.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
+      mensagem += `\nTotal: R$${total.toFixed(2)}\nObrigado!`;
+
+      const numeroWhatsApp = "5541997029155";
+      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, "_blank");
+
+      carrinho = [];
+      localStorage.removeItem("carrinho");
+      renderCarrinho();
+    });
+  }
+
+  renderCarrinho();
+});

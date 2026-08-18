@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PAINEL DE PEDIDOS - Detalhes do Produto | PIZZAS & SABORES</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+ <header>
+    <h2 src="./img/canil-08-lugares.w" alt="Logo FP" >PIZZAS & SABORES</h2>
+    <nav>
+        <nav>
+    <ul class="menu">
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./cadastro.html">Perfil</a></li>
+      <li><a href="./carrinho.html">Carrinho</a></li>
+    </ul>
+  </nav>
+</header>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel de Pedidos</title>
+  <style>
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+      z-index: 1000;
+      position: flex;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background: #007BFF;
+      color: #fff;
+    }
+    button {
+      margin: 20px auto;
+      display: block;
+      padding: 10px 15px;
+      background: #28a745;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #218838;
+    }
+
+    .tablepedido {
+      position: fixed;
+      z-index: 1000;
+
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">Painel de Pedidos</h1>
+  <table id="tabelaPedidos">
+    <thead id="tablepedido">
+      <tr>
+        <th id="name">Nome</th>
+        <th id="email">Email</th>
+        <th id="numero">Número</th>
+        <th id="pedido">Pedido</th>
+        <th id="endereco">Endereço</th>
+        <th id="pedido">Status</th>
+      </tr>
+    </thead>
+    <tbody id="lista-pedidos"></tbody>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const tabela = document.getElementById("lista-pedidos");
+  const pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+  pedidos.forEach(p => {
+    const linha = tabela.insertRow();
+    linha.insertCell().textContent = p.nome;
+    linha.insertCell().textContent = p.email;
+    linha.insertCell().textContent = p.numero;
+    linha.insertCell().textContent = p.pedido;
+    linha.insertCell().textContent = p.endereco;
+    linha.insertCell().textContent = p.status;
+  });
+  
+});
+</script>
+
+    
+  </script>
+</body>
+</html>
+
+<script src="./script.js"></script>
+</body>

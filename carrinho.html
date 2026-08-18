@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Carrinho de Compras | PIZZAS & SABORES</title>
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0; padding: 0;
+      background-color: #f9f9f9;
+    }
+    header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      background: #800020;
+      color: #fff;
+      padding: 15px;
+      z-index: 1000;
+    }
+    main {
+      margin-top: 100px;
+      padding: 20px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #lista-carrinho {
+      list-style: none;
+      padding: 0;
+    }
+    #lista-carrinho li {
+      background: #fff;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    #lista-carrinho button {
+      background: #800020;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0 3px;
+    }
+    #lista-carrinho button:hover {
+      background: tomato;
+    }
+    #finalizar {
+      display: block;
+      margin: 20px auto;
+      background: #28a745;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #finalizar:hover {
+      background: #218838;
+    }
+    .empty {
+      text-align: center;
+      color: #666;
+      font-size: 18px;
+      margin-top: 40px;
+    }
+    #total {
+      text-align: right;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<header>
+    <h2>Pizzas & Sabores</h2>
+    <nav>
+      <ul class="menu">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./cadastro.html">Perfil</a></li>
+        <li><a href="./carrinho.html">Carrinho</a></li>
+        <li><a href="./faleconosco.html">Fale Conosco</a></li>
+      </ul>
+    </nav>
+</header>
+
+<main>
+  <h1>🛒 Seu Carrinho</h1>
+  <ul id="lista-carrinho"></ul>
+  <p id="total"></p>
+  <button id="finalizar">Finalizar Pedido</button>
+  <p id="mensagem-vazio" class="empty" style="display:none;">Seu carrinho está vazio.</p>
+</main>
+
+  <script>
+    carrinho = carrinho.filter(item => item && item.nome && typeof item.preco === "number" && item.quantidade);
+
+    // Estrutura do carrinho: [{nome, preco, quantidade}]
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+    function salvarCarrinho() {
+      localStorage.setItem("carrinho", JSON.stringify(carrinho));
+      renderCarrinho();
+    }
+
+    // function renderCarrinho() {
+    //   const lista = document.getElementById("lista-carrinho");
+    //   const vazio = document.getElementById("mensagem-vazio");
+    //   const totalElement = document.getElementById("total");
+    //   lista.innerHTML = "";
+
+    //   if (carrinho.length === 0) {
+    //     vazio.style.display = "block";
+    //     document.getElementById("finalizar").style.display = "none";
+    //     totalElement.textContent = "";
+    //     return;
+    //   } else {
+    //     vazio.style.display = "none";
+    //     document.getElementById("finalizar").style.display = "block";
+    //   }
+
+    //   let total = 0;
+
+    //   carrinho.forEach((item, i) => {
+    //     const li = document.createElement("li");
+    //     li.innerHTML = `
+    //       <span>${item.nome} - R$${item.preco.toFixed(2)}</span>
+    //       <div>
+    //         <button class="menos">➖</button>
+    //         <span>${item.quantidade}</span>
+    //         <button class="mais">➕</button>
+    //         <button class="remover">❌</button>
+    //       </div>
+    //     `;
+
+    //     // Botão menos
+    //     li.querySelector(".menos").addEventListener("click", () => {
+    //       if (item.quantidade > 1) {
+    //         item.quantidade--;
+    //       } else {
+    //         carrinho.splice(i, 1);
+    //       }
+    //       salvarCarrinho();
+    //     });
+
+    //     // Botão mais
+    //     li.querySelector(".mais").addEventListener("click", () => {
+    //       item.quantidade++;
+    //       salvarCarrinho();
+    //     });
+
+    //     // Botão remover
+    //     li.querySelector(".remover").addEventListener("click", () => {
+    //       carrinho.splice(i, 1);
+    //       salvarCarrinho();
+    //     });
+
+    //     lista.appendChild(li);
+
+    //     total += item.preco * item.quantidade;
+    //   });
+
+    //   totalElement.textContent = `Total: R$${total.toFixed(2)}`;
+    // }
+
+    // document.getElementById("finalizar").addEventListener("click", () => {
+    //   if (carrinho.length === 0) {
+    //     alert("Seu carrinho está vazio.");
+    //     return;
+    //   }
+
+    //   let mensagem = "Olá! Gostaria de finalizar meu pedido:\n\n";
+    //   carrinho.forEach((item, i) => {
+    //     mensagem += `${i + 1}. ${item.nome} (x${item.quantidade}) - R$${(item.preco * item.quantidade).toFixed(2)}\n`;
+    //   });
+
+    //   const total = carrinho.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
+    //   mensagem += `\nTotal: R$${total.toFixed(2)}\nObrigado!`;
+
+      const numeroWhatsApp = "5541997029155"; // número da pizzaria
+      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+
+      window.open(url, "_blank");
+
+      carrinho = [];
+      localStorage.removeItem("carrinho");
+      renderCarrinho();
+    });
+
+    renderCarrinho();
+
+  </script>
+
+  <script src="./script.js"></script>
+
+
+  </body>
+  </html>

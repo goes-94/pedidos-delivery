@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+
+<head>
+
+    
+  <meta charset="UTF-8">
+  <title>Fale Conosco - Lucão Gaiolas</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #000000;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 40px;
+      justify-content: space-between;
+    }
+    .form-section, .contact-section {
+      flex: 1;
+      min-width: 300px;
+      margin: 20px;
+    }
+    h1 {
+      color: #ff9900;
+      font-size: 28px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #ffffff;
+      border: 1px solid #ff9100;
+      color: #0b0b0b;
+    }
+    button {
+      background-color: #00ff66;
+      color: #000;
+      padding: 12px 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .contact-buttons a {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+    .phone { background-color: #e74c3c; }
+    .whatsapp { background-color: #2ecc71; }
+    .email { background-color: #3498db; }
+    .social-icons {
+      margin-top: 30px;
+    }
+    .social-icons span {
+      margin-right: 15px;
+      font-size: 20px;
+      color: #888;
+    }
+    .dog-image {
+      max-width: 100%;
+      margin-top: -1%;
+      border-radius: 20%;
+    }
+
+    .social-icons {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        word-spacing: 0%;
+    }
+    .footer-column social-media:hover{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #00ff66;
+    }
+
+    
+  </style>
+  <link rel="stylesheet" href="./style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+</head>
+<body>
+   <header>
+    <h2 src="./img/canil-08-lugares.w" alt="Logo FP" >PIZZAS & SABORES</h2>
+    <nav>
+        <nav>
+    <ul class="menu">
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./index.html">Cardápio</a></li>
+      <li><a href="./painelpedidos.html">Painel</a></li>
+      <li><a href="./carrinho.html">Carrinho</a></li>
+    </ul>
+  </nav>
+</header>
+  <div class="container">
+    <div class="form-section">
+      <h2>Cadastro e Pedido</h2>
+<form id="formpedido">
+  <label for="nome">Nome:</label>
+  <input type="text" id="nome" name="nome" required>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required>
+
+  <label for="numero">Telefone:</label>
+  <input type="number" id="numero" name="numero" required>
+
+  <label for="endereco">Endereço:</label>
+  <input type="text" id="endereco" name="endereco" required>
+
+  <label for="pedido">Pedido:</label>
+  <textarea id="pedido" name="pedido" rows="4" required></textarea>
+
+  <button type="submit" id="submit">Enviar Pedido</button>
+</form>
+
+</body>
+<script src="./script.js"></script> 
+    </div>
+    <div class="contact-section">
+      <h1>Entre em contato conosco!</h1>
+      <div class="contact-buttons">
+        <a href="tel:+5541984205083" class="phone">📞 (41) 98420-5083</a>
+        <a href="https://wa.me/5541984205083" class="whatsapp">📱 WhatsApp: (41) 98420-5083</a>
+        <a href="mailto:lucaogaiolas@gmail.com" class="email">📧 contatolucaogaiolas.com.br</a>
+      </div>
+      <img src="./img/dog-image.png" alt="Cachorro simpático" class="dog-image">
+      <!-- <div class="social-icons"> -->
+         <div class="footer-column social-media">
+            <h4 class="column-title">SIGA-NOS</h4>
+            <div class="social-icons">
+                <a href="#" target="_blank" class="social-icon">
+                    <i class="icon-facebook">FB</i> 
+                </a>
+                <a href="https://www.instagram.com/lucaogaiolaspet?igsh=MTVzcmZrMWthdzltMQ==" target="_blank" class="social-icon">
+                    <i class="icon-instagram">IG</i>
+                </a>
+                <a href="#" target="_blank" class="social-icon">
+                    <i class="icon-youtube">YT</i>
+                </a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Fazer Pedido</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 20px; }
+    h2 { color: #333; text-align: center; }
+    form { background: #fff; padding: 20px; border-radius: 8px; max-width: 500px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input, textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+    button { margin-top: 15px; padding: 10px 15px; background: #007BFF; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <h2>Cadastro e Pedido</h2>
+  <form action="painelpedidos.html" method="post">
+    <label for="nome">Nome:
+    <input type="text" id="nome" name="nome" required>
+    </label>
+
+    <label for="email">Email:
+    <input type="email" id="email" name="email" required>
+    </label>
+
+    <label for="telefone">Telefone
+    <input type="text" id="numero" name="numero" required>
+    </label>
+
+    <label for="endereco">Endereço:
+    <input type="text" id="endereco" name="endereco" required>
+    </label>
+
+    <label for="pedido">Pedido:
+    <textarea id="pedido" name="pedido" rows="4" required></textarea>
+    </label>
+
+    <button type="submit">Enviar Pedido</button>
+  </form>
+</body>
+<script src="./script.js"></script>
+</html>

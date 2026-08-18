@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Margherita - Detalhes do Produto | Pizzas & Sabores</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+<header>
+  <h2>Pizzas & Sabores</h2>
+  <nav>
+    <ul class="menu">
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./cadastro.html">Perfil</a></li>
+      <li><a href="./carrinho.html">Carrinho</a></li>
+      <li><a href="./faleconosco.html">Fale Conosco</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="product-details-section">
+  <div class="container product-details-container">
+    <p class="breadcrumb">
+      <a href="./index.html">HOME</a> / Margherita
+    </p>
+
+    <div class="product-content-wrapper">
+      <div class="image-gallery">
+        <img src="./img/MARGHERITA.webp" alt="Pizza Margherita - Imagem Principal" class="main-product-image">
+      </div>
+
+      <div class="details-block">
+        <h1 class="product-title">PIZZA MARGHERITA</h1>
+        <p class="product-short-description">
+          A pizza Margherita é um clássico italiano, simples e elegante, que combina molho de tomate fresco, mussarela derretida e folhas de manjericão aromáticas.
+        </p>
+        
+        <div class="price-and-action">
+          <span class="price">R$49,00</span>
+          <a href="https://wa.me/5541997029155?text=Olá, gostaria de uma pizza Margherita" target="_blank" class="btn-whatsapp">
+            Solicitar via WhatsApp
+          </a>
+          <!-- Botão corrigido -->
+          <button 
+            class="btn-carrinho" 
+            data-nome="Pizza Margherita" 
+            data-preco="49">
+            Adicionar ao Carrinho
+        </button>
+
+        </div>
+
+        <h2 class="specs-title">Especificações</h2>
+        <ul class="specs-list">
+          <li><strong>Molho de Tomate Fresco:</strong> Preparado com tomates selecionados e temperos naturais.</li>
+          <li><strong>Mussarela:</strong> Cremosa e derretida, trazendo suavidade ao sabor.</li>
+          <li><strong>Manjericão Fresco:</strong> Folhas aromáticas que completam o prato.</li>
+          <li><strong>Massa Artesanal:</strong> Crocante por fora e macia por dentro.</li>
+          <li><strong>Equilíbrio de Sabores:</strong> Combinação leve e refrescante, ideal para qualquer ocasião.</li>
+          <li><strong>Clássico Italiano:</strong> Uma das pizzas mais tradicionais e apreciadas no mundo.</li>
+        </ul>
+
+        <h2 class="description-title">Sabor Clássico e Autêntico</h2>
+        <p class="full-description">
+          A Pizza Margherita é a essência da culinária italiana. A massa artesanal assada em forno de alta temperatura serve de base para o molho de tomate fresco e encorpado. A mussarela derretida traz cremosidade, enquanto o manjericão fresco adiciona aroma e sabor únicos. Cada fatia é uma combinação perfeita de simplicidade e autenticidade, tornando essa pizza uma das mais amadas em todo o mundo.
+        </p>
+
+        <a href="https://wa.me/5541997029155?text=Olá, gostaria de uma pizza Margherita" target="_blank" class="btn-whatsapp mt-20">
+          <i class="icon-whatsapp">📱</i> Fale Conosco e Personalize seu Pedido
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="main-footer">
+  <div class="container footer-grid">
+    <div class="footer-column company-info">
+      <h3 class="footer-logo">PIZZAS & SABORES</h3>
+      <p class="company-slogan">Qualidade que a sua família merece</p>
+      <p class="copyright-info">&copy;
+        <span id="current-year">2025</span> Tech-Lion. Todos os direitos reservados.
+      </p>
+    </div>
+
+    <div class="footer-column contact-info">
+      <h4 class="column-title">FALE CONOSCO</h4>
+      <ul>
+        <li>📧 Email: <a href="mailto:lucaogaiolas@gmail.com">pizzas&sabores.com.br</a></li>
+        <li>📞 Telefone: <a href="tel:+5541997029155">(41) Click-Whats</a></li>
+        <li>📱 WhatsApp: <a href="https://wa.me/5541997029155" target="_blank">(41) Click-Whats</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column social-media">
+      <h4 class="column-title">SIGA-NOS</h4>
+      <div class="social-icons">
+        <a href="#" target="_blank" class="social-icon">FB</a>
+        <a href="https://www.instagram.com/lucaogaiolaspet" target="_blank" class="social-icon">IG</a>
+        <a href="#" target="_blank" class="social-icon">YT</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Atualiza ano automaticamente
+  document.getElementById('current-year').textContent = new Date().getFullYear();
+
+  // Função para adicionar ao carrinho
+  function adicionarAoCarrinho(nome, preco) {
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+    const existente = carrinho.find(item => item.nome === nome);
+
+    if (existente) {
+      existente.quantidade++;
+    } else {
+      carrinho.push({ nome: nome, preco: preco, quantidade: 1 });
+    }
+
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+    alert(`${nome} foi adicionado ao carrinho!`);
+  }
+</script>
+
+<script src="./script.js"></script>
+
+</body>
+</html>
