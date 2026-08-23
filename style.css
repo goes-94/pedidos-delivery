@@ -17,6 +17,14 @@
         height: auto; /* Garante que a seção estique */
         padding: 40px 20px; /* Dá um respiro para o texto não colar nas bordas */
     }
+    .mapa-info {
+        display: flex;
+        align-items: center;
+        height: auto;
+        width: 100%;
+    }
+
+
 }
 
 /* --- RESET E BASE --- */
