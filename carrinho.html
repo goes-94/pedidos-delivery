@@ -84,6 +84,87 @@
       font-weight: bold;
       margin-top: 20px;
     }
+
+    /* Formulário de cadastro para envio do pedido para whatsaap */
+    
+    /* body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #000000;
+    } */
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 40px;
+      justify-content: space-between;
+    }
+    .form-section, .contact-section {
+      flex: 1;
+      min-width: 300px;
+      margin: 20px;
+    }
+    h1 {
+      color: #ff9900;
+      font-size: 28px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #ffffff;
+      border: 1px solid #ff9100;
+      color: #0b0b0b;
+    }
+    button {
+      background-color: #00ff66;
+      color: #000;
+      padding: 12px 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .contact-buttons a {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+    .phone { background-color: #e74c3c; }
+    .whatsapp { background-color: #2ecc71; }
+    .email { background-color: #3498db; }
+    .social-icons {
+      margin-top: 30px;
+    }
+    .social-icons span {
+      margin-right: 15px;
+      font-size: 20px;
+      color: #888;
+    }
+    .dog-image {
+      max-width: 100%;
+      margin-top: -1%;
+      border-radius: 20%;
+    }
+
+    .social-icons {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        word-spacing: 0%;
+    }
+    .footer-column social-media:hover{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #00ff66;
+    }
+
+    
+  
   </style>
 </head>
 <body class="bodytest">
@@ -92,7 +173,7 @@
     <nav>
       <ul class="menu">
         <li><a href="./index.html">Home</a></li>
-        <li><a href="./cadastro.html">Perfil</a></li>
+        <li><a href="./bebidas.html">Bebidas</a></li>
         <li><a href="./carrinho.html">Carrinho</a></li>
         <li><a href="./faleconosco.html">Contato</a></li>
       </ul>
@@ -103,20 +184,44 @@
   <h1>🛒 Seu Carrinho</h1>
   <ul id="lista-carrinho"></ul>
   <p id="total"></p>
+  <!-- <div class="container">
+    <div class="form-section">
+      <h2>Cadastro e Pedido</h2> -->
+<!-- <form id="formpedido">
+  <label for="nome">Nome:</label>
+  <input type="text" id="nome" name="nome" required>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required>
+
+  <label for="numero">Telefone:</label>
+  <input type="number" id="numero" name="numero" required>
+
+  <label for="endereco">Endereço:</label>
+  <input type="text" id="endereco" name="endereco" required>
+
+  <!-- <label for="pedido">Pedido:</label>
+  <textarea id="pedido" name="pedido" rows="4" required></textarea> -->
+
+  <!-- <button type="submit" id="submit">Enviar Pedido</button> -->
+<!-- </form> -->
+
   <button id="finalizar">Finalizar Pedido</button>
   <p id="mensagem-vazio" class="empty" style="display:none;">Seu carrinho está vazio.</p>
 </main>
 
+
+
   <script>
-    carrinho = carrinho.filter(item => item && item.nome && typeof item.preco === "number" && item.quantidade);
+    // carrinho = carrinho.filter(item => item && item.nome && typeof item.preco === "number" && item.quantidade);
 
-    // Estrutura do carrinho: [{nome, preco, quantidade}]
-    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+    // // Estrutura do carrinho: [{nome, preco, quantidade}]
+    // let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 
-    function salvarCarrinho() {
-      localStorage.setItem("carrinho", JSON.stringify(carrinho));
-      renderCarrinho();
-    }
+    // function salvarCarrinho() {
+    //   localStorage.setItem("carrinho", JSON.stringify(carrinho));
+    //   renderCarrinho();
+    // }
 
     // function renderCarrinho() {
     //   const lista = document.getElementById("lista-carrinho");
@@ -192,17 +297,17 @@
     //   const total = carrinho.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
     //   mensagem += `\nTotal: R$${total.toFixed(2)}\nObrigado!`;
 
-      const numeroWhatsApp = "5541997029155"; // número da pizzaria
-      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+    //   const numeroWhatsApp = "5541997029155"; // número da pizzaria
+    //   const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
 
-      window.open(url, "_blank");
+    //   window.open(url, "_blank");
 
-      carrinho = [];
-      localStorage.removeItem("carrinho");
-      renderCarrinho();
-    });
+    //   carrinho = [];
+    //   localStorage.removeItem("carrinho");
+    //   renderCarrinho();
+    // });
 
-    renderCarrinho();
+    // renderCarrinho();
 
   </script>
 

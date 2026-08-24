@@ -10,27 +10,34 @@ document.addEventListener("DOMContentLoaded", () => {
       const email = document.getElementById("email").value.trim();
       const numero = document.getElementById("numero").value.trim();
       const endereco = document.getElementById("endereco").value.trim();
-      const pedido = document.getElementById("pedido").value.trim();
+
+      // Recupera carrinho
+      const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+      // Monta texto do pedido
+      const pedidoTexto = carrinho.map(item =>
+        `${item.nome} (x${item.quantidade}) - R$${(item.preco * item.quantidade).toFixed(2)}`
+      ).join("\n");
+
+      const total = carrinho.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
 
       // Cria objeto do pedido
-      const novoPedido = { nome, email, numero, endereco, pedido, status: "Pendente" };
+      const novoPedido = { nome, email, numero, endereco, pedido: pedidoTexto, status: "Pendente" };
 
       // Recupera lista existente ou cria nova
       let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+      pedidos.push(novoPedido);
+      localStorage.setItem("pedidos", JSON.stringify(pedidos));
 
-      // Evita duplicação
-      const existe = pedidos.some(p =>
-        p.nome === novoPedido.nome &&
-        p.email === novoPedido.email &&
-        p.numero === novoPedido.numero &&
-        p.endereco === novoPedido.endereco &&
-        p.pedido === novoPedido.pedido
-      );
+      // Monta mensagem para WhatsApp
+      let mensagem = `Olá! Gostaria de finalizar meu pedido:\n\n${pedidoTexto}\n\nTotal: R$${total.toFixed(2)}\n\nDados do cliente:\nNome: ${nome}\nTelefone: ${numero}\nEmail: ${email}\nEndereço: ${endereco}`;
 
-      if (!existe) {
-        pedidos.push(novoPedido);
-        localStorage.setItem("pedidos", JSON.stringify(pedidos));
-      }
+      const numeroWhatsApp = "5541997029155"; // número da pizzaria
+      const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+      window.open(urlWhatsApp, "_blank");
+
+      // Limpa carrinho
+      localStorage.removeItem("carrinho");
 
       // Redireciona para painel
       window.location.href = "painelpedidos.html";
@@ -180,21 +187,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      let mensagem = "Olá! Gostaria de finalizar meu pedido:\n\n";
-      carrinho.forEach((item, i) => {
-        mensagem += `${i + 1}. ${item.nome} (x${item.quantidade}) - R$${(item.preco * item.quantidade).toFixed(2)}\n`;
-      });
+      // Salva o carrinho no localStorage para usar depois
+      localStorage.setItem("carrinho", JSON.stringify(carrinho));
 
-      const total = carrinho.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
-      mensagem += `\nTotal: R$${total.toFixed(2)}\nObrigado!`;
-
-      const numeroWhatsApp = "5541997029155";
-      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-      window.open(url, "_blank");
-
-      carrinho = [];
-      localStorage.removeItem("carrinho");
-      renderCarrinho();
+      // Redireciona para a página de cadastro
+      window.location.href = "cadastro.html";
     });
   }
 
