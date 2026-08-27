@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard- Caixa | PIZZAS E SABORES</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #800020;
+    }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .card {
+      background: #fff;
+      margin: 15px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 220px;
+      text-align: center;
+    }
+    .card h2 {
+      margin: 0;
+      font-size: 22px;
+      color: #333;
+    }
+    .card p {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .total {
+      background: #28a745;
+      color: #fff;
+    }
+    .pendente { background: #ffea04; }
+    .entregue { background: #00ff73; }
+    .cancelado { background: #f10707; color: #fff; }
+  </style>
+</head>
+<body>
+     <header>
+    <h2 src="./img/pizzas&sabores" alt="Logo FP" >PIZZAS & SABORES</h2>
+    <nav>
+        <nav>
+    <ul class="menu">
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./painelpedidos.html">Pedidos</a></li>
+      <li><a href="./carrinho.html">Carrinho</a></li>
+    </ul>
+  </nav>
+</header>
+  <h1>📊 Dashboard da Pizzaria</h1>
+  <div class="stats">
+    <div class="card total">
+      <h2>Total de Pedidos</h2>
+      <p id="totalPedidos">0</p>
+    </div>
+    <div class="card pendente">
+      <h2>Pendentes</h2>
+      <p id="pendentes">0</p>
+    </div>
+    <div class="card entregue">
+      <h2>Entregues</h2>
+      <p id="entregues">0</p>
+    </div>
+    <div class="card cancelado">
+      <h2>Cancelados</h2>
+      <p id="cancelados">0</p>
+    </div>
+    <div class="card">
+      <h2>💰 Faturamento</h2>
+      <p id="faturamento">R$0,00</p>
+    </div>
+  </div>
+
+  <script>
+    // Recupera pedidos do localStorage
+    const pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+    let totalPedidos = pedidos.length;
+    let pendentes = pedidos.filter(p => p.status === "Pendente").length;
+    let entregues = pedidos.filter(p => p.status === "Entregue").length;
+    let cancelados = pedidos.filter(p => p.status === "Cancelado").length;
+
+    // Calcula faturamento (somando valores dos pedidos entregues)
+    let faturamento = 0;
+    pedidos.forEach(p => {
+      // Extrai valores do texto do pedido
+      const linhas = p.pedido.split("\n");
+      linhas.forEach(linha => {
+        const match = linha.match(/R\$(\d+(\.\d{1,2})?)/);
+        if (match && p.status === "Entregue") {
+          faturamento += parseFloat(match[1]);
+        }
+      });
+    });
+
+    // Atualiza na tela
+    document.getElementById("totalPedidos").textContent = totalPedidos;
+    document.getElementById("pendentes").textContent = pendentes;
+    document.getElementById("entregues").textContent = entregues;
+    document.getElementById("cancelados").textContent = cancelados;
+    document.getElementById("faturamento").textContent = "R$" + faturamento.toFixed(2);
+  </script>
+</body>
+</html>

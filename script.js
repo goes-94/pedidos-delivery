@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.removeItem("carrinho");
 
       // Redireciona para painel
-      window.location.href = "painelpedidos.html";
+      window.location.href = "pagamento-pix.html";
     });
   }
 
@@ -197,3 +197,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderCarrinho();
 });
+
+//Painel de login e lógica de acesso ao painel de pedidos
+ document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const usuario = document.getElementById("usuario").value.trim();
+      const senha = document.getElementById("senha").value.trim();
+      const erro = document.getElementById("erro");
+
+      // Defina aqui o usuário e senha do dono da pizzaria
+      const usuarioCorreto = "admin";
+      const senhaCorreta = "1234";
+
+      if (usuario === usuarioCorreto && senha === senhaCorreta) {
+        // Marca login como válido
+        localStorage.setItem("logado", "true");
+        window.location.href = "painelpedidos.html";
+      } else {
+        erro.textContent = "Usuário ou senha inválidos!";
+      }
+    });
