@@ -22,15 +22,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const total = carrinho.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
 
       // Cria objeto do pedido
-      const novoPedido = { nome, email, numero, endereco, pedido: pedidoTexto, status: "Pendente" };
+      const novoPedido = { nome, email, numero, endereco, pedido: pedidoTexto, valor: total, status: "Pendente", pagamento: "Pix" };
 
       // Recupera lista existente ou cria nova
       let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
       pedidos.push(novoPedido);
       localStorage.setItem("pedidos", JSON.stringify(pedidos));
 
+      // Calcula faturamento total
+      let faturamentoTotal = pedidos.reduce((acc, p) => acc + (p.valor || 0), 0);
+
+      // Exibe no elemento de faturamento
+      document.getElementById("faturamento").textContent = "R$ " + faturamentoTotal.toFixed(2);
+
+
       // Monta mensagem para WhatsApp
-      let mensagem = `Olá! Gostaria de finalizar meu pedido:\n\n${pedidoTexto}\n\nTotal: R$${total.toFixed(2)}\n\nDados do cliente:\nNome: ${nome}\nTelefone: ${numero}\nEmail: ${email}\nEndereço: ${endereco}`;
+      let mensagem = `Olá! Gostaria de finalizar meu pedido (pagamento no SIte):\n\n${pedidoTexto}\n\nTotal: R$${total.toFixed(2)}\n\nDados do cliente:\nNome: ${nome}\nTelefone: ${numero}\nEmail: ${email}\nEndereço: ${endereco}`;
 
       const numeroWhatsApp = "5541997029155"; // número da pizzaria
       const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
@@ -42,6 +49,49 @@ document.addEventListener("DOMContentLoaded", () => {
       // Redireciona para painel
       window.location.href = "pagamento-pix.html";
     });
+
+    const btnEntrega = document.getElementById("btnEntrega");
+
+if (btnEntrega) {
+  btnEntrega.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    // Captura os mesmos dados do formulário
+    const nome = document.getElementById("nome").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const numero = document.getElementById("numero").value.trim();
+    const endereco = document.getElementById("endereco").value.trim();
+
+    const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+    const pedidoTexto = carrinho.map(item =>
+      `${item.nome} (x${item.quantidade}) - R$${(item.preco * item.quantidade).toFixed(2)}`
+    ).join("\n");
+
+    const total = carrinho.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
+
+    // Cria objeto do pedido
+    const novoPedido = { nome, email, numero, endereco, pedido: pedidoTexto, valor: total, status: "Pendente", pagamento: "Entrega" };
+
+    let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+    pedidos.push(novoPedido);
+    localStorage.setItem("pedidos", JSON.stringify(pedidos));
+
+    // Monta mensagem para WhatsApp
+    let mensagem = `Olá! Gostaria de finalizar meu pedido (pagamento na entrega):\n\n${pedidoTexto}\n\nTotal: R$${total.toFixed(2)}\n\nDados do cliente:\nNome: ${nome}\nTelefone: ${numero}\nEmail: ${email}\nEndereço: ${endereco}`;
+
+    const numeroWhatsApp = "5541997029155";
+    const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+    window.open(urlWhatsApp, "_blank");
+
+    // Limpa carrinho
+    localStorage.removeItem("carrinho");
+
+    // Redireciona para página de confirmação
+    window.location.href = "confirmação.html";
+  });
+  }
+
   }
 
   // Se estamos no painelpedidos.html
@@ -56,6 +106,8 @@ document.addEventListener("DOMContentLoaded", () => {
       linha.insertCell().textContent = p.numero;
       linha.insertCell().textContent = p.pedido;
       linha.insertCell().textContent = p.endereco;
+      linha.insertCell().textContent = "R$ " + (p.valor ? p.valor.toFixed(2) : "0.00");
+
 
       // Coluna de status com select
       const statusCell = linha.insertCell();

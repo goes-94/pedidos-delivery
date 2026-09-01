@@ -98,17 +98,10 @@
     let cancelados = pedidos.filter(p => p.status === "Cancelado").length;
 
     // Calcula faturamento (somando valores dos pedidos entregues)
-    let faturamento = 0;
-    pedidos.forEach(p => {
-      // Extrai valores do texto do pedido
-      const linhas = p.pedido.split("\n");
-      linhas.forEach(linha => {
-        const match = linha.match(/R\$(\d+(\.\d{1,2})?)/);
-        if (match && p.status === "Entregue") {
-          faturamento += parseFloat(match[1]);
-        }
-      });
-    });
+    let faturamento = pedidos
+      .filter(p => p.status === "Entregue")
+      .reduce((acc, p) => acc + (p.valor || 0), 0);
+
 
     // Atualiza na tela
     document.getElementById("totalPedidos").textContent = totalPedidos;
