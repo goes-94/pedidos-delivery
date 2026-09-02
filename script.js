@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("formpedido");
+  const btnPix = document.getElementById("btnPix");
 
-  // Se estamos na página de cadastro
-  if (form) {
-    form.addEventListener("submit", function(event) {
+  if (btnPix) {
+    btnPix.addEventListener("click", function(event) {
       event.preventDefault();
 
       const nome = document.getElementById("nome").value.trim();
@@ -33,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let faturamentoTotal = pedidos.reduce((acc, p) => acc + (p.valor || 0), 0);
 
       // Exibe no elemento de faturamento
-      document.getElementById("faturamento").textContent = "R$ " + faturamentoTotal.toFixed(2);
+      // document.getElementById("faturamento").textContent = "R$ " + faturamentoTotal.toFixed(2);
 
 
       // Monta mensagem para WhatsApp
@@ -41,20 +40,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const numeroWhatsApp = "5541997029155"; // número da pizzaria
       const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+      // Abre WhatsApp em nova aba
       window.open(urlWhatsApp, "_blank");
 
       // Limpa carrinho
       localStorage.removeItem("carrinho");
 
-      // Redireciona para painel
-      window.location.href = "pagamento-pix.html";
+      // Redireciona para página Pix após pequeno atraso
+      setTimeout(() => {
+        window.location.href = "pagamento-pix.html";
+      }, 500);
+
     });
 
     const btnEntrega = document.getElementById("btnEntrega");
 
-if (btnEntrega) {
-  btnEntrega.addEventListener("click", function(event) {
-    event.preventDefault();
+    if (btnEntrega) {
+      btnEntrega.addEventListener("click", function(event) {
+        event.preventDefault();
 
     // Captura os mesmos dados do formulário
     const nome = document.getElementById("nome").value.trim();
