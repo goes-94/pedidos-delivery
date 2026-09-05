@@ -1,191 +1,138 @@
+// Finalização de pedidos (Pix e Entrega)
 document.addEventListener("DOMContentLoaded", () => {
   const btnPix = document.getElementById("btnPix");
+  const btnEntrega = document.getElementById("btnEntrega");
 
-  if (btnPix) {
-    btnPix.addEventListener("click", function(event) {
-      event.preventDefault();
-
-      const nome = document.getElementById("nome").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const numero = document.getElementById("numero").value.trim();
-      const endereco = document.getElementById("endereco").value.trim();
-
-      // Recupera carrinho
-      const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
-
-      // Monta texto do pedido
-      const pedidoTexto = carrinho.map(item =>
-        `${item.nome} (x${item.quantidade}) - R$${(item.preco * item.quantidade).toFixed(2)}`
-      ).join("\n");
-
-      const total = carrinho.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
-
-      // Cria objeto do pedido
-      const novoPedido = { nome, email, numero, endereco, pedido: pedidoTexto, valor: total, status: "Pendente", pagamento: "Pix" };
-
-      // Recupera lista existente ou cria nova
-      let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
-      pedidos.push(novoPedido);
-      localStorage.setItem("pedidos", JSON.stringify(pedidos));
-
-      // Calcula faturamento total
-      let faturamentoTotal = pedidos.reduce((acc, p) => acc + (p.valor || 0), 0);
-
-      // Exibe no elemento de faturamento
-      // document.getElementById("faturamento").textContent = "R$ " + faturamentoTotal.toFixed(2);
-
-
-      // Monta mensagem para WhatsApp
-      let mensagem = `Olá! Gostaria de finalizar meu pedido (pagamento no SIte):\n\n${pedidoTexto}\n\nTotal: R$${total.toFixed(2)}\n\nDados do cliente:\nNome: ${nome}\nTelefone: ${numero}\nEmail: ${email}\nEndereço: ${endereco}`;
-
-      const numeroWhatsApp = "5541997029155"; // número da pizzaria
-      const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-      // Abre WhatsApp em nova aba
-      window.open(urlWhatsApp, "_blank");
-
-      // Limpa carrinho
-      localStorage.removeItem("carrinho");
-
-      // Redireciona para página Pix após pequeno atraso
-      setTimeout(() => {
-        window.location.href = "pagamento-pix.html";
-      }, 500);
-
-    });
-
-    const btnEntrega = document.getElementById("btnEntrega");
-
-    if (btnEntrega) {
-      btnEntrega.addEventListener("click", function(event) {
-        event.preventDefault();
-
-    // Captura os mesmos dados do formulário
-    const nome = document.getElementById("nome").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const numero = document.getElementById("numero").value.trim();
-    const endereco = document.getElementById("endereco").value.trim();
+  async function processarPedido(tipoPagamento) {
+    const nome = document.getElementById("nome")?.value.trim() || "";
+    const email = document.getElementById("email")?.value.trim() || "";
+    const numero = document.getElementById("numero")?.value.trim() || "";
+    const endereco = document.getElementById("endereco")?.value.trim() || "";
 
     const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
-
     const pedidoTexto = carrinho.map(item =>
       `${item.nome} (x${item.quantidade}) - R$${(item.preco * item.quantidade).toFixed(2)}`
     ).join("\n");
-
     const total = carrinho.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
 
-    // Cria objeto do pedido
-    const novoPedido = { nome, email, numero, endereco, pedido: pedidoTexto, valor: total, status: "Pendente", pagamento: "Entrega" };
+    const novoPedido = { nome, email, numero, endereco, pedido: pedidoTexto, valor: total, status: "Pendente", pagamento: tipoPagamento };
 
     let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
     pedidos.push(novoPedido);
     localStorage.setItem("pedidos", JSON.stringify(pedidos));
 
-    // Monta mensagem para WhatsApp
-    let mensagem = `Olá! Gostaria de finalizar meu pedido (pagamento na entrega):\n\n${pedidoTexto}\n\nTotal: R$${total.toFixed(2)}\n\nDados do cliente:\nNome: ${nome}\nTelefone: ${numero}\nEmail: ${email}\nEndereço: ${endereco}`;
+    if (window.firebasePedidos?.salvarPedido) {
+      try {
+        const id = await window.firebasePedidos.salvarPedido(novoPedido);
+        console.log("Pedido salvo no Firestore com ID:", id);
+      } catch (erro) {
+        console.error("Erro ao salvar no Firestore:", erro.message, erro);
+      }
+    }
 
+    let mensagem = `Olá! Gostaria de finalizar meu pedido (pagamento: ${tipoPagamento}):\n\n${pedidoTexto}\n\nTotal: R$${total.toFixed(2)}\n\nDados do cliente:\nNome: ${nome}\nTelefone: ${numero}\nEmail: ${email}\nEndereço: ${endereco}`;
     const numeroWhatsApp = "5541997029155";
     const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
     window.open(urlWhatsApp, "_blank");
 
-    // Limpa carrinho
     localStorage.removeItem("carrinho");
-
-    // Redireciona para página de confirmação
-    window.location.href = "confirmação.html";
-  });
+    setTimeout(() => {
+      window.location.href = tipoPagamento === "Pix" ? "pagamento-pix.html" : "confirmacao.html";
+    }, 500);
   }
 
-  }
+  if (btnPix) btnPix.addEventListener("click", e => { e.preventDefault(); processarPedido("Pix"); });
+  if (btnEntrega) btnEntrega.addEventListener("click", e => { e.preventDefault(); processarPedido("Entrega"); });
 
-  // Se estamos no painelpedidos.html
-  const tabela = document.getElementById("lista-pedidos");
-  if (tabela) {
-    let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+// Painel pedidos  
+const tbody = document.getElementById("lista-pedidos");
+if (tbody && window.firebasePedidos?.ouvirPedidos) {
+  window.firebasePedidos.ouvirPedidos((pedidos) => {
+    tbody.innerHTML = "";
+    let faturamentoTotal = 0; // <-- inicializa o acumulador
 
-    pedidos.forEach((p, index) => {
-      const linha = tabela.insertRow();
-      linha.insertCell().textContent = p.nome;
-      linha.insertCell().textContent = p.email;
-      linha.insertCell().textContent = p.numero;
-      linha.insertCell().textContent = p.pedido;
-      linha.insertCell().textContent = p.endereco;
+    pedidos.forEach((p) => {
+      faturamentoTotal += p.valor || 0; // <-- soma cada pedido
+
+      const linha = tbody.insertRow();
+      linha.insertCell().textContent = p.nome || "-";
+      linha.insertCell().textContent = p.email || "-";
+      linha.insertCell().textContent = p.numero || "-";
+      linha.insertCell().textContent = p.endereco || "-";
+      linha.insertCell().textContent = p.pedido || "-";
       linha.insertCell().textContent = "R$ " + (p.valor ? p.valor.toFixed(2) : "0.00");
 
-
-      // Coluna de status com select
       const statusCell = linha.insertCell();
       const select = document.createElement("select");
       ["Pendente", "Entregue", "Cancelado"].forEach(opt => {
-        const option = document.createElement("option");
-        option.value = opt;
-        option.textContent = opt;
-        if (p.status === opt) option.selected = true;
-        select.appendChild(option);
+        const option = new Option(opt, opt, false, p.status === opt);
+        select.add(option);
       });
 
-      // Aplica cor inicial
       aplicarCor(select, p.status);
 
-      // Atualiza status e cor no localStorage quando mudar
-      select.addEventListener("change", () => {
-        pedidos[index].status = select.value;
-        localStorage.setItem("pedidos", JSON.stringify(pedidos));
-        aplicarCor(select, select.value);
-      });
+      select.onchange = async () => {
+        try {
+          await window.firebasePedidos.atualizarStatusPedido(p.id, select.value);
+          aplicarCor(select, select.value);
+        } catch (erro) {
+          console.error("Erro ao atualizar status:", erro);
+        }
+      };
 
       statusCell.appendChild(select);
     });
-  }
+
+    // Exibe faturamento total
+    const faturamentoEl = document.getElementById("faturamento");
+    if (faturamentoEl) {
+      faturamentoEl.textContent = `Faturamento total: R$ ${faturamentoTotal.toFixed(2)}`;
+    }
+  });
+}
+
+
+
+
 
   // Função para aplicar cores conforme status
   function aplicarCor(elemento, status) {
-    elemento.style.color = "#000"; // texto padrão
+    elemento.style.color = "#000";
     if (status === "Pendente") {
-      elemento.style.backgroundColor = "#ffea04";
+      elemento.style.backgroundColor = "#ffea04"; // amarelo
     } else if (status === "Entregue") {
-      elemento.style.backgroundColor = "#00ff73";
+      elemento.style.backgroundColor = "#00ff73"; // verde
     } else if (status === "Cancelado") {
-      elemento.style.backgroundColor = "#f10707";
-      elemento.style.color = "#fff"; // texto branco para contraste
+      elemento.style.backgroundColor = "#f10707"; // vermelho
+      elemento.style.color = "#fff"; // texto branco
     }
   }
 });
 
 // Carrinho de Compras
-
 document.addEventListener("DOMContentLoaded", () => {
   let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
-
-  // Captura todos os botões de adicionar ao carrinho
   const botoesCarrinho = document.querySelectorAll(".btn-carrinho");
+
   botoesCarrinho.forEach(botao => {
     botao.addEventListener("click", () => {
       const nome = botao.getAttribute("data-nome");
       const preco = parseFloat(botao.getAttribute("data-preco"));
-
-      // Verifica se já existe o item
       const existente = carrinho.find(item => item.nome === nome);
-
-      if (existente) {
-        existente.quantidade++;
-      } else {
-        carrinho.push({ nome: nome, preco: preco, quantidade: 1 });
-      }
-
+      if (existente) existente.quantidade++;
+      else carrinho.push({ nome, preco, quantidade: 1 });
       localStorage.setItem("carrinho", JSON.stringify(carrinho));
       alert(`${nome} foi adicionado ao carrinho!`);
+      renderCarrinho();
     });
   });
 
-  // Renderiza carrinho se existir seção no HTML
   function renderCarrinho() {
     const lista = document.getElementById("lista-carrinho");
     const totalElement = document.getElementById("total");
     if (!lista) return;
-
     lista.innerHTML = "";
     let total = 0;
-
     carrinho.forEach((item, i) => {
       const li = document.createElement("li");
       li.innerHTML = `
@@ -197,36 +144,16 @@ document.addEventListener("DOMContentLoaded", () => {
           <button class="remover">❌</button>
         </div>
       `;
-
-      // Botão menos
       li.querySelector(".menos").addEventListener("click", () => {
-        if (item.quantidade > 1) {
-          item.quantidade--;
-        } else {
-          carrinho.splice(i, 1);
-        }
+        if (item.quantidade > 1) item.quantidade--; else carrinho.splice(i, 1);
         salvarCarrinho();
       });
-
-      // Botão mais
-      li.querySelector(".mais").addEventListener("click", () => {
-        item.quantidade++;
-        salvarCarrinho();
-      });
-
-      // Botão remover
-      li.querySelector(".remover").addEventListener("click", () => {
-        carrinho.splice(i, 1);
-        salvarCarrinho();
-      });
-
+      li.querySelector(".mais").addEventListener("click", () => { item.quantidade++; salvarCarrinho(); });
+      li.querySelector(".remover").addEventListener("click", () => { carrinho.splice(i, 1); salvarCarrinho(); });
       lista.appendChild(li);
       total += item.preco * item.quantidade;
     });
-
-    if (totalElement) {
-      totalElement.textContent = `Total: R$${total.toFixed(2)}`;
-    }
+    if (totalElement) totalElement.textContent = `Total: R$${total.toFixed(2)}`;
   }
 
   function salvarCarrinho() {
@@ -241,35 +168,30 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Seu carrinho está vazio.");
         return;
       }
-
-      // Salva o carrinho no localStorage para usar depois
       localStorage.setItem("carrinho", JSON.stringify(carrinho));
-
-      // Redireciona para a página de cadastro
       window.location.href = "cadastro.html";
     });
   }
-
   renderCarrinho();
 });
 
-//Painel de login e lógica de acesso ao painel de pedidos
- document.getElementById("loginForm").addEventListener("submit", function(e) {
+// Login
+document.addEventListener("DOMContentLoaded", () => {
+  const loginForm = document.getElementById("loginForm");
+  if (loginForm) {
+    loginForm.addEventListener("submit", function(e) {
       e.preventDefault();
-
       const usuario = document.getElementById("usuario").value.trim();
       const senha = document.getElementById("senha").value.trim();
       const erro = document.getElementById("erro");
-
-      // Defina aqui o usuário e senha do dono da pizzaria
       const usuarioCorreto = "admin";
       const senhaCorreta = "1234";
-
       if (usuario === usuarioCorreto && senha === senhaCorreta) {
-        // Marca login como válido
         localStorage.setItem("logado", "true");
         window.location.href = "painelpedidos.html";
       } else {
         erro.textContent = "Usuário ou senha inválidos!";
       }
     });
+  }
+});

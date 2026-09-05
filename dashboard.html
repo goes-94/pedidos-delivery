@@ -83,32 +83,40 @@
       <p id="cancelados">0</p>
     </div>
     <div class="card">
-      <h2>💰 Faturamento</h2>
-      <p id="faturamento">R$0,00</p>
+      <h2 id="faturamento">Faturamento total: R$ 0,00</h2>
+
+      <!-- <p id="faturamento">R$0,00</p> -->
     </div>
   </div>
 
   <script>
-    // Recupera pedidos do localStorage
-    const pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+    document.addEventListener("DOMContentLoaded", () => {
+  if (window.firebasePedidos?.ouvirPedidos) {
+    window.firebasePedidos.ouvirPedidos((pedidos) => {
+      // Contadores
+      const totalPedidos = pedidos.length;
+      const pendentes = pedidos.filter(p => p.status === "Pendente").length;
+      const entregues = pedidos.filter(p => p.status === "Entregue").length;
+      const cancelados = pedidos.filter(p => p.status === "Cancelado").length;
 
-    let totalPedidos = pedidos.length;
-    let pendentes = pedidos.filter(p => p.status === "Pendente").length;
-    let entregues = pedidos.filter(p => p.status === "Entregue").length;
-    let cancelados = pedidos.filter(p => p.status === "Cancelado").length;
+      // Faturamento: somando apenas pedidos entregues
+      const faturamento = pedidos
+        .filter(p => p.status === "Entregue")
+        .reduce((acc, p) => acc + (p.valor || 0), 0);
 
-    // Calcula faturamento (somando valores dos pedidos entregues)
-    let faturamento = pedidos
-      .filter(p => p.status === "Entregue")
-      .reduce((acc, p) => acc + (p.valor || 0), 0);
+      // Atualiza na tela
+      document.getElementById("totalPedidos").textContent = totalPedidos;
+      document.getElementById("pendentes").textContent = pendentes;
+      document.getElementById("entregues").textContent = entregues;
+      document.getElementById("cancelados").textContent = cancelados;
+      document.getElementById("faturamento").textContent = `Faturamento total: R$ ${faturamento.toFixed(2)}`;
+    });
+  }
+});
 
-
-    // Atualiza na tela
-    document.getElementById("totalPedidos").textContent = totalPedidos;
-    document.getElementById("pendentes").textContent = pendentes;
-    document.getElementById("entregues").textContent = entregues;
-    document.getElementById("cancelados").textContent = cancelados;
-    document.getElementById("faturamento").textContent = "R$" + faturamento.toFixed(2);
   </script>
+
+  <script type="module" src="./firebase.js"></script>
+<script type="module" src="./script.js"></script>
 </body>
 </html>
