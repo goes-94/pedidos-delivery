@@ -1,5 +1,8 @@
-
-
+/* @media (min-width: 1200px) {
+  h1 {
+    margin-top: 230px;
+  }
+} */
 @media (max-width: 600px) {
         .card-produto {
         width: 100%; /* No celular, ele ocupa a tela toda */
@@ -26,6 +29,24 @@
 
 
 }
+h1 {
+  margin-top: 10px; /* padrão para mobile */
+}
+
+/* Ajuste para telas médias (tablet e acima) */
+@media (min-width: 768px) {
+  h1 {
+    margin-top: 40px; /* aumenta para desktop */
+  }
+}
+
+/* Ajuste para telas grandes (monitores maiores) */
+@media (min-width: 1200px) {
+  h1 {
+    margin-top: 60px;
+  }
+}
+
 
 /* --- RESET E BASE --- */
 * {
@@ -705,7 +726,7 @@ header nav li a:hover {
 /* --- Estilização da Página CANIS (Grid de Produtos) --- */
 
 .products-list-section {
-    padding: 70px 0;
+    padding: 20px 0px;
     background-color: #800020; /* Fundo preto */
     color: #fff;
     text-align: center;
@@ -728,6 +749,7 @@ header nav li a:hover {
 .page-title2 {
     flex-direction: row;
     justify-content: flex-end;
+    margin-top: 20px;
     color: #e00b40; /* Verde Limão */
     font-size: 3em;
     margin-bottom: 10px;
@@ -900,7 +922,7 @@ header nav li a:hover {
     margin-top: 40px;
     width: 80%;
     max-width: 330px;
-    height: auto;
+    /* height: auto; */
     border-radius: 10px;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
     border: 1px solid #333;
@@ -908,14 +930,27 @@ header nav li a:hover {
 
 /* Bloco de Detalhes */
 .details-block {
+    margin-top: 45px;
     flex: 1;
+    /* margin-top: 15px; */
+    /* padding: 100px; */
 }
+
 
 .product-title {
     font-size: 2.5em;
     color: #ff261b;
     margin-bottom: 10px;
     text-transform: uppercase;
+    margin-top: 03px
+}
+@media (max-width: 768px){
+    .details-block{
+        margin-top: -195px;
+        flex: unset;
+        
+    }
+
 }
 
 .product-short-description {
