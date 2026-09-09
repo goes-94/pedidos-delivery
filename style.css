@@ -30,13 +30,17 @@
 
 }
 h1 {
-  margin-top: 10px; /* padrão para mobile */
+  margin-top: 30px; /* padrão para mobile */
 }
 
 /* Ajuste para telas médias (tablet e acima) */
 @media (min-width: 768px) {
   h1 {
-    margin-top: 40px; /* aumenta para desktop */
+    margin-top: 130px; /* aumenta para desktop */
+  }
+
+  .page-title {
+    margin-top: 40px;
   }
 }
 
@@ -742,6 +746,7 @@ header nav li a:hover {
     color: #800020; /* Verde Limão */
     font-size: 3em;
     margin-bottom: 10px;
+    margin-top: 60px;
     text-transform: uppercase;
     letter-spacing: 3px;
 }
@@ -749,7 +754,7 @@ header nav li a:hover {
 .page-title2 {
     flex-direction: row;
     justify-content: flex-end;
-    margin-top: 20px;
+    margin-top: 30px;
     color: #e00b40; /* Verde Limão */
     font-size: 3em;
     margin-bottom: 10px;
@@ -865,6 +870,7 @@ header nav li a:hover {
 /* Responsividade */
 @media (max-width: 768px) {
     .page-title {
+        margin-top: 50px;
         font-size: 2.5em;
     }
     .product-grid {
