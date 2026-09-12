@@ -35,6 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
     window.open(urlWhatsApp, "_blank");
 
+    localStorage.setItem("valorPagamento", total);
+
     localStorage.removeItem("carrinho");
     setTimeout(() => {
       window.location.href = tipoPagamento === "Pix" ? "pagamento-pix.html" : "confirmacao.html";

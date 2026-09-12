@@ -90,37 +90,86 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-  <script>
-    // Recupera carrinho e calcula total
-    const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
-    const total = carrinho.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
+<script>
+function gerarCRC16(payload) {
+  let polinomio = 0x1021;
+  let resultado = 0xFFFF;
 
-    // Define chave Pix da pizzaria
-    const chavePix = "41997029155"; // substitua pela sua chave real
-    const nomeRecebedor = "Pizzas & Sabores";
-    const cidade = "Itapoá";
-    const txid = "PEDIDO" + Math.floor(Math.random() * 10000);
+  for (let i = 0; i < payload.length; i++) {
+    resultado ^= (payload.charCodeAt(i) << 8);
+    for (let j = 0; j < 8; j++) {
+      if ((resultado & 0x8000) !== 0) {
+        resultado = (resultado << 1) ^ polinomio;
+      } else {
+        resultado <<= 1;
+      }
+      resultado &= 0xFFFF;
+    }
+  }
+  return resultado.toString(16).toUpperCase().padStart(4, "0");
+}
 
-    // Monta payload Pix padrão (EMV)
-    const payload = `00020126360014BR.GOV.BCB.PIX0114${chavePix}52040000530398654054${total.toFixed(2)}5802BR5914${nomeRecebedor}6006${cidade}62070503${txid}6304`;
+function campo(id, valor) {
+  const tamanho = valor.length.toString().padStart(2, "0");
+  return id + tamanho + valor;
+}
 
-    // Gera QR Code Pix
-    new QRCode(document.getElementById("qrcode"), {
-      text: payload,
-      width: 200,
-      height: 200
-    });
+// 🔑 Usa o valor salvo na finalização
+const total = parseFloat(localStorage.getItem("valorPagamento")) || 0;
 
-    // Exibe valor e chave Pix
-    document.getElementById("valor").textContent = "R$ " + total.toFixed(2);
-    document.getElementById("pixKey").textContent = "Chave Pix: " + chavePix;
+const chavePix = "+5541997029155"; 
+const nomeRecebedor = "PizzasSabores"; // até 25 chars
+const cidade = "Itapoa";               // até 15 chars
+const txid = "PEDIDO" + Math.floor(Math.random() * 10000);
 
-    // Função copiar chave Pix
-    document.getElementById("copiar").addEventListener("click", () => {
-      navigator.clipboard.writeText(chavePix);
-      alert("Chave Pix copiada!");
-    });
-  </script>
+let payloadSemCRC =
+  campo("00", "01") +
+  campo("26", campo("00", "BR.GOV.BCB.PIX") + campo("01", chavePix)) +
+  campo("52", "0000") +
+  campo("53", "986") +
+  campo("54", total.toFixed(2)) +
+  campo("58", "BR") +
+  campo("59", nomeRecebedor) +
+  campo("60", cidade) +
+  campo("62", campo("05", txid)) +
+  "6304";
+
+let crc = gerarCRC16(payloadSemCRC);
+let payloadFinal = payloadSemCRC + crc;
+
+// Gera QR Code Pix com o valor correto
+new QRCode(document.getElementById("qrcode"), {
+  text: payloadFinal,
+  width: 200,
+  height: 200
+});
+
+// Exibe valor e chave Pix
+document.getElementById("valor").textContent = "R$ " + total.toFixed(2);
+document.getElementById("pixKey").textContent = "Chave Pix: " + chavePix;
+
+// Função copiar chave Pix com fallback
+document.getElementById("copiar").addEventListener("click", () => {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(chavePix)
+      .then(() => alert("Chave Pix copiada!"))
+      .catch(() => alert("Não foi possível copiar a chave Pix."));
+  } else {
+    const tempInput = document.createElement("input");
+    tempInput.value = chavePix;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+    alert("Chave Pix copiada!");
+  }
+});
+
+// Opcional: limpar valorPagamento depois de usar
+localStorage.removeItem("valorPagamento");
+</script>
+
+
   <script src="./script.js"></script>
 </body>
 </html>
