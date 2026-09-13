@@ -146,24 +146,25 @@ new QRCode(document.getElementById("qrcode"), {
 
 // Exibe valor e chave Pix
 document.getElementById("valor").textContent = "R$ " + total.toFixed(2);
-document.getElementById("pixKey").textContent = "Chave Pix: " + chavePix;
-
-// Função copiar chave Pix com fallback
 document.getElementById("copiar").addEventListener("click", () => {
+  const textoCopiar = `Chave Pix: ${chavePix}\nValor: R$ ${total.toFixed(2)}`;
+
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(chavePix)
-      .then(() => alert("Chave Pix copiada!"))
-      .catch(() => alert("Não foi possível copiar a chave Pix."));
+    navigator.clipboard.writeText(textoCopiar)
+      .then(() => alert("Chave Pix e valor copiados!"))
+      .catch(() => alert("Não foi possível copiar."));
   } else {
+    // Fallback para navegadores sem suporte
     const tempInput = document.createElement("input");
-    tempInput.value = chavePix;
+    tempInput.value = textoCopiar;
     document.body.appendChild(tempInput);
     tempInput.select();
     document.execCommand("copy");
     document.body.removeChild(tempInput);
-    alert("Chave Pix copiada!");
+    alert("Chave Pix e valor copiados!");
   }
 });
+
 
 // Opcional: limpar valorPagamento depois de usar
 localStorage.removeItem("valorPagamento");
