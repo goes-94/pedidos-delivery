@@ -145,25 +145,24 @@ new QRCode(document.getElementById("qrcode"), {
 });
 
 // Exibe valor e chave Pix
-document.getElementById("valor").textContent = "R$ " + total.toFixed(2);
-document.getElementById("copiar").addEventListener("click", () => {
-  const textoCopiar = `Chave Pix: ${chavePix}\nValor: R$ ${total.toFixed(2)}`;
+document.getElementById("valor").innerHTML = "R$ " + total.toFixed(2);
 
+document.getElementById("copiar").addEventListener("click", () => {
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(textoCopiar)
-      .then(() => alert("Chave Pix e valor copiados!"))
-      .catch(() => alert("Não foi possível copiar."));
+    navigator.clipboard.writeText(payloadFinal)
+      .then(() => alert("Código Pix copiado!"))
+      .catch(() => alert("Não foi possível copiar o código Pix."));
   } else {
-    // Fallback para navegadores sem suporte
     const tempInput = document.createElement("input");
-    tempInput.value = textoCopiar;
+    tempInput.value = payloadFinal;
     document.body.appendChild(tempInput);
     tempInput.select();
     document.execCommand("copy");
     document.body.removeChild(tempInput);
-    alert("Chave Pix e valor copiados!");
+    alert("Código Pix copiado!");
   }
 });
+
 
 
 // Opcional: limpar valorPagamento depois de usar
